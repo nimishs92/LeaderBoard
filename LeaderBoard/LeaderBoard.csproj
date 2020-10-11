@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LeaderBoard.Data\LeaderBoard.Data.csproj" />
     <ProjectReference Include="..\LeaderBoard.Entity\LeaderBoard.Entity.csproj" />
+    <ProjectReference Include="..\LeaderBoard.Services\LeaderBoard.Services.csproj" />
   </ItemGroup>
 
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LeaderBoard.Data;
+using LeaderBoard.Entity.DbSettings;
+using LeaderBoard.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace LeaderBoard
 {
@@ -27,6 +30,15 @@ namespace LeaderBoard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<PlayerStatsDatabaseSettings>(
+                Configuration.GetSection(nameof(PlayerStatsDatabaseSettings)));
+
+            services.AddSingleton<IPlayerStatsDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<PlayerStatsDatabaseSettings>>().Value);
+
+            services.AddSingleton<PlayerStatsService>();
+            services.AddSingleton<LeaderBoardService>();
+
             services.AddControllers();
             services.AddDbContext<LeaderBoardDbContext>(context => { context.UseInMemoryDatabase("LeaderBoard"); });
         }
